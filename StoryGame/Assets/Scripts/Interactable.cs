@@ -13,6 +13,7 @@ public class Interactable : MonoBehaviour
 
     void Awake()
     {
+        actUI.GetComponent<TextMeshProUGUI>().text = "";
         actUI.SetActive(false);
     }
 
@@ -22,10 +23,13 @@ public class Interactable : MonoBehaviour
         if(Physics.CheckSphere(transform.position, r, mask))
         {
             actUI.SetActive(true);
-            actUI.GetComponent<TextMeshProUGUI>().text = gameObject.name;
+
+            if(actUI.GetComponent<TextMeshProUGUI>().text.Length <= 0)
+                actUI.GetComponent<TextMeshProUGUI>().text = gameObject.name;
         }
         else
         {
+            actUI.GetComponent<TextMeshProUGUI>().text = "";
             actUI.SetActive(false);
         }
 
