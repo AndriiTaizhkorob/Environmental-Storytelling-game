@@ -7,9 +7,12 @@ public class Interactable : MonoBehaviour
 {
     [SerializeField] private GameObject actUI;
     [SerializeField] private GameObject player;
-    [SerializeField] private float r;
-    [SerializeField] public InputActionReference interact;
+    [SerializeField] private InputActionReference interact;
     [SerializeField] private LayerMask mask;
+    [SerializeField] private float r;
+    [SerializeField] private bool destroy;
+
+    private string textUI;
 
     void Awake()
     {
@@ -34,27 +37,29 @@ public class Interactable : MonoBehaviour
         }
 
 
-        if (interact.action.triggered && Physics.CheckSphere(transform.position, r, mask))
+        if (interact.action.triggered && Physics.CheckSphere(transform.position, r, mask) && name == actUI.GetComponent<TextMeshProUGUI>().text)
         {
-            PickUp();
-        }
-
-        if (interact.action.triggered)
-        {
-            Debug.Log("keyWorks");
+            Interaction();
         }
     }
 
-    public void PickUp()
+    public void Interaction()
     {
-        if (gameObject.name == "Key")
-        {
+        if (name == "Key")
             player.GetComponent<Inventory>().hasKey = true;
+
+        if (GetComponent<NotePopUp>())
+        { 
+            GetComponent<NotePopUp>().SetText();
+            player.GetComponent<Inventory>().SetControllsInactive();
         }
 
-        player.GetComponent<Inventory>().PlusClue();
-        Debug.Log("Got the item.");
+        if (CompareTag("Clue"))
+            player.GetComponent<Inventory>().PlusClue();
+        
         actUI.SetActive(false);
-        Destroy(gameObject);
+
+        if(destroy)
+            Destroy(gameObject);
     }
 }

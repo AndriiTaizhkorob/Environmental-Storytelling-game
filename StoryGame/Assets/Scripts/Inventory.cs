@@ -48,11 +48,16 @@ public class Inventory : MonoBehaviour
     {
         if (clueCount == clueCountGoal)
         {
-            Cursor.lockState = CursorLockMode.None;
             gameEnd.SetActive(true);
-            GetComponent<PlayerMovement>().enabled = false;
-            GetComponent<CameraControls>().enabled = false;
+            SetControllsInactive();
         }
+    }
+
+    public void SetControllsInactive()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        GetComponent<PlayerMovement>().enabled = false;
+        GetComponent<CameraControls>().enabled = false;
     }
 
     public void SetControllsActive()
