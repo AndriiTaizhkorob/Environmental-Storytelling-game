@@ -12,6 +12,8 @@ public class Interactable : MonoBehaviour
     [SerializeField] private float r;
     [SerializeField] private bool destroy;
 
+    private bool found = false;
+
     void Awake()
     {
         actUI.GetComponent<TextMeshProUGUI>().text = "";
@@ -21,9 +23,10 @@ public class Interactable : MonoBehaviour
 
     void Update()
     {
-        if (interact.action.triggered && name == actUI.GetComponent<TextMeshProUGUI>().text)
+        if (interact.action.triggered && name == actUI.GetComponent<TextMeshProUGUI>().text && !found)
         {
             Interaction();
+            found = true;
         }
     }
 
