@@ -12,8 +12,6 @@ public class Interactable : MonoBehaviour
     [SerializeField] private float r;
     [SerializeField] private bool destroy;
 
-    private string textUI;
-
     void Awake()
     {
         actUI.GetComponent<TextMeshProUGUI>().text = "";
@@ -23,24 +21,27 @@ public class Interactable : MonoBehaviour
 
     void Update()
     {
-        if(Physics.CheckSphere(transform.position, r, mask))
-        {
-            actUI.SetActive(true);
-
-            if(actUI.GetComponent<TextMeshProUGUI>().text.Length <= 0)
-                actUI.GetComponent<TextMeshProUGUI>().text = gameObject.name;
-        }
-        else
-        {
-            actUI.GetComponent<TextMeshProUGUI>().text = "";
-            actUI.SetActive(false);
-        }
-
-
-        if (interact.action.triggered && Physics.CheckSphere(transform.position, r, mask) && name == actUI.GetComponent<TextMeshProUGUI>().text)
+        if (interact.action.triggered && name == actUI.GetComponent<TextMeshProUGUI>().text)
         {
             Interaction();
         }
+    }
+
+    private void OnTriggerEnter(Collider zone)
+    {
+        actUI.SetActive(true);
+
+        if (actUI.GetComponent<TextMeshProUGUI>().text.Length <= 0)
+        {
+            actUI.GetComponent<TextMeshProUGUI>().text = gameObject.name;
+            Debug.Log($"Name changed " + name + ".");
+        }
+    }
+
+    private void OnTriggerExit(Collider zone)
+    {
+        actUI.GetComponent<TextMeshProUGUI>().text = "";
+        actUI.SetActive(false);
     }
 
     public void Interaction()
@@ -56,10 +57,14 @@ public class Interactable : MonoBehaviour
 
         if (CompareTag("Clue"))
             player.GetComponent<Inventory>().PlusClue();
-        
+
         actUI.SetActive(false);
 
         if(destroy)
+        {
+            actUI.GetComponent<TextMeshProUGUI>().text = "";
+            actUI.SetActive(false);
             Destroy(gameObject);
+        }
     }
 }

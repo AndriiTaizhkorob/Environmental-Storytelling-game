@@ -7,7 +7,7 @@ public class NotePopUp : MonoBehaviour
 
     [SerializeField] private GameObject letterUI;
     [SerializeField] private TextMeshProUGUI letterText;
-    [SerializeField] private string text;
+    [SerializeField] [Multiline] private string text;
 
     void Awake()
     {

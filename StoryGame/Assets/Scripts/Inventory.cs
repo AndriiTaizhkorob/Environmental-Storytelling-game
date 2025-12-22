@@ -8,6 +8,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] private TextMeshProUGUI clueCounter;
     [SerializeField] private GameObject gameEnd;
     [SerializeField] private GameObject gameTip;
+    [SerializeField] private GameObject letterUI;
 
     private int clueCount = 0;
     private int clueCountGoal;
@@ -46,7 +47,7 @@ public class Inventory : MonoBehaviour
 
     public void PauseMenu()
     {
-        if (clueCount == clueCountGoal)
+        if (clueCount == clueCountGoal && !letterUI.activeInHierarchy)
         {
             gameEnd.SetActive(true);
             SetControllsInactive();
